@@ -43,6 +43,25 @@ html{
   outline: 0;
   margin-bottom: 3%;
 }
+.inputx {
+ 
+  display: flex;
+  align-items: center;
+ 
+  input:focus{
+    outline: 0;
+    
+  }
+  
+}
+.inputx input{
+ 
+padding: 10px;
+border-radius: 5px;
+ 
+ 
+  
+}
 
 
 .submit-button {
