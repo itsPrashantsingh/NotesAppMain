@@ -1,0 +1,87 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  overflow-x: hidden;
+}
+
+html{
+  overflow-x: hidden;
+}
+
+
+
+.form{
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  width: 30vw;
+  min-height: 30vh;
+  
+}
+
+.container{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  
+ 
+}
+
+.container input{
+
+  padding: 11px;
+  border: solid 1px black;
+  border-radius: 5px;
+  outline: 0;
+  margin-bottom: 3%;
+}
+
+
+.submit-button {
+  background-color: black;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 2%;
+  margin-bottom: 1.5%;
+  width: 30%;
+}
+.gridItems {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+  gap: 10px; /* Space between notes */
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.note {
+  background-color: #eeeeee;
+  padding: 10px;
+  cursor: pointer;
+  height: 220px;
+  border-radius: 7px;
+  width: 100%; /* Ensures the note fills its grid cell */
+  box-sizing: border-box; /* Includes padding in width/height */
+}
+.addButton{
+  background-color: transparent;
+  border: solid 2px #00ADB5;
+
+
+}
+.addButton:hover{
+  background-color: #00ADB5;
+  color: white;
+
+}
