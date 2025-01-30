@@ -25,7 +25,7 @@ router.post("/signup",async (req, res)=>{
   }
   else{
     bcrypt.hash(password, 10, async function(err, hash) {
-      // Store hash in your password DB.
+     
       let user = await User.create({username, name, email, password:hash});
 
       var token = jwt.sign({ userID: user._id, email:user.email }, secret);
