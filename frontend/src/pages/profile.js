@@ -1,9 +1,40 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 import Navbar from '../components/navbar';
 import Note from '../components/note';
 
 
+
 const Profile = () => {
+  const [notes, setNotes] = useState(null);
+
+  let getNotes = async()=>{
+    let res = await fetch('http://localhost:8000/getnotes',{
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        },
+      body: JSON.stringify({userID: localStorage.getItem('userID')
+
+      })
+      }).then(res=>res.json()).then(data=>{
+          if(data.success){
+            setNotes(data.notes);
+          }
+          else{
+            console.log(data.message);
+          }
+      
+
+    });
+    
+
+  };
+
+  useEffect(()=>{
+    getNotes();
+  },[]);
+
   return (
     <>
     <Navbar />
@@ -28,12 +59,15 @@ const Profile = () => {
    
     <div className="gridItems ">
   
-        <Note />
-        <Note />
-        <Note />
-        <Note />
-        <Note />
-        
+       {
+        notes ? notes.map((ele,index)=>{
+          return(
+            <>
+            <Note key={index} index={index} note={ele}/>
+            </>
+          )
+        }):"Empty as Heaven!"
+       }
         
     </div>
 

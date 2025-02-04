@@ -33,7 +33,8 @@ router.post("/signup",async (req, res)=>{
       res.json({
         success: true,
         message:"User created successfully",
-        token:token
+        token:token,
+        userID:user._id
       })
   });
   }
@@ -54,7 +55,9 @@ router.post("/login", async (req, res)=>{
       res.json({
         success: true,
         message:"User logged in successfully",
-        token:token
+        token:token,
+        userID:user._id
+
       })
     }
     else{
@@ -67,9 +70,12 @@ router.post("/login", async (req, res)=>{
 })
 
 router.post("/getnotes", async (req, res)=>{
-  let notes = await notesModel.find({_id: req.body.userID});
+  let notes = await notesModel.find({uploadedBy: req.body.userID});
   if(notes.length>0){
-    res.json(notes);
+    res.json({success: true,
+      message:"Notes found",
+      notes:notes
+    });
   }
   else{
     res.status(400).json({message:"No notes found",
@@ -82,11 +88,15 @@ router.post("/getnotes", async (req, res)=>{
 router.post("/addnotes", async(req, res)=>{
   let{title, description, content, isImportant, uploadedBy} = req.body;
   let note = await notesModel.create({title, description, content, isImportant, uploadedBy});
+  
   res.json({
+    success: true,
     noteId: note._id,
     userId: uploadedBy
 
   });
+
+
 
 })
 
