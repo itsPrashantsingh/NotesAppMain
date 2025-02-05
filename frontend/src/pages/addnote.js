@@ -1,26 +1,55 @@
 import React from 'react'
-import { useState, useRef, useMemo } from 'react';
+import { useState, useRef} from 'react';
 import JoditEditor from 'jodit-react';
 import Navbar from '../components/navbar';
+import { useNavigate } from 'react-router-dom'
+
 
 
 const AddNote = ({ placeholder }) => {
     const editor = useRef(null);
 	  const [content, setContent] = useState('');
 
-	const config = useMemo(() => ({
-			readonly: false, // all options from https://xdsoft.net/jodit/docs/,
-			placeholder: placeholder || 'Start typings...'
-		}),
-		[placeholder]
-	);
+    const [title, settitle] = useState('');
+    const [description, setdescription] = useState('');
+    const [isimportant, setimportant] = useState(false);
+    let navigate = useNavigate();
+    
+    const submitForm = async (e) => {
+      e.preventDefault();
+      let res = await fetch("http://localhost:8000/addnotes",{
+        mode:"cors",
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({title:title, description:description, content:content, isImportant:isimportant,uploadedBy:localStorage.getItem("userID")})
+      });
+      const data = await res.json();
+        // console.log(data);
+        if (data.success) {
+
+          alert("Note Added Successfully");
+          navigate("/");
+
+          } 
+          else {
+            alert("Error Adding Note");
+            
+          }
+      
+      
+    }
+
+
+
+
+
 
   return (
     <>
     <Navbar />
     
     <div className='.addNote min-h-screen px-[50px]' >
-        <form className='my-10'>
+        <form className='my-10' onSubmit={submitForm} >
             <h3 className='m-0 p-0 text-3xl '>Create a New Note</h3>
             <div className='inputBox mt-5'>
                 <label htmlFor=''>Enter Note Title</label>
@@ -31,6 +60,8 @@ const AddNote = ({ placeholder }) => {
                   style={{ border: "2px solid #555" }}
                   name="title"
                   id="title"
+                  onChange={(e)=>settitle(e.target.value)}
+                  value={title}
                   required
             />
             </div>
@@ -43,6 +74,8 @@ const AddNote = ({ placeholder }) => {
               style={{ border: "2px solid #555" }}
               name="description"
               id="description"
+              onChange={(e)=>setdescription(e.target.value)}
+              value={description}
               required
             ></textarea>
           </div>
@@ -52,8 +85,8 @@ const AddNote = ({ placeholder }) => {
 			value={content}
 			
 			tabIndex={1} // tabIndex of textarea
-			onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
-			onChange={newContent => {}}
+			
+			onChange={newContent => setContent(newContent)}
 		/>
     <label  for="check"> Important Tag:</label> 
     <input
@@ -61,7 +94,8 @@ const AddNote = ({ placeholder }) => {
                   className="ml-2 mt-4 "
                   name="check"
                   id="check"
-                  required
+                  onChange={(e)=>setimportant(e.target.checked)}
+                  
             /> 
     <br></br>
     <button className="add text-black py-2 px-7 rounded mt-4" type="submit">Add</button>
