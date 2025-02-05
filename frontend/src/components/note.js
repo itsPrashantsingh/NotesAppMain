@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { data } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 
 
 
 
 const Note = ({note, height, index}) => {
+  const navigate = useNavigate();
   const [isDeleteModel, setIsDeleteModel] = useState(false);
   
   const deleteNote=(id)=>{
@@ -26,21 +28,31 @@ const Note = ({note, height, index}) => {
 
 
   }
-  const editNote=()=>{
-    setIsDeleteModel(false);
+  const editNote=(id)=>{
+      navigate(`/editNote/${id}`);
 
   }
   return (
     <>
-        <div className='note relative'>
-            <p className='text-[black]'>Note {index+1}</p>
+        <div onClick={()=>{navigate(`/singleNotePage/${note._id}`)}} className='note relative'>
+          <div className='flex items-center justify-between'>
+          <p className='text-[black]'>Note {index+1}</p>
+            {
+              note.isImportant ? 
+              <p className='text-[white] bg-red-500 px-[10px] p-[3px] rounded '>Important</p>
+              :""
+
+            }
+
+          </div>
+            
             <h1 className='text-[black] text-[20px] line-clamp-1 w-[80%]'>{note.title}</h1>
             <p className='text-[black] line-clamp-4 w-[80%]'>{note.description}</p>
             <div className='noteBottom absolute bottom-5 w-[93%] flex justify-between items-center'>
                 <p className='text-[black]'>{new Date(note.date).toDateString()}</p>
                 <div className='flex items-center gap-1'>
-                    <img className='w-[30px] h-[30px]' onClick={setIsDeleteModel} alt='delete'/>
-                    <img className='w-[35px] h-[35px]'  alt='edit'/>
+                    <img className='w-[30px] h-[30px]' onClick={()=>setIsDeleteModel(true)} alt='delete'/>
+                    <img className='w-[35px] h-[35px]' onClick={()=>editNote(note._id)}  alt='edit'/>
                 </div>
 
             </div>
@@ -56,7 +68,7 @@ const Note = ({note, height, index}) => {
 
                 <div className="flex items-center gap-2 absolute bottom-[5%] w-full">
                     <button onClick={()=> deleteNote(note._id)} className="delete min-w-[46%] p-[8px] bg-[#f55757] text-[#fff] border-0 outline-0 cursor-pointer">Delete</button>
-                    <button onClick={()=> editNote(note._id)} className="cancel min-w-[46%] p-[8px] bg-[#578df5] text-[#fff] border-0 outline-0 cursor-pointer">Cancel</button>
+                    <button onClick={()=> setIsDeleteModel(false)} className="cancel min-w-[46%] p-[8px] bg-[#578df5] text-[#fff] border-0 outline-0 cursor-pointer">Cancel</button>
                 </div>
 
               </div>

@@ -8,6 +8,7 @@ import Login from "./pages/login";
 import Profile from "./pages/profile";
 import AddNote from "./pages/addnote";
 import SingleNotePage from "./pages/singleNotePage";
+import EditNote from "./pages/editNote";
 
 
 const app = ()=>{
@@ -21,7 +22,8 @@ const app = ()=>{
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/addnote" element={<AddNote />} />
-          <Route path="/singleNotePage" element={<SingleNotePage />} />
+          <Route path="/singleNotePage/:id" element={<SingleNotePage />} />
+          <Route path="/editnote/:id" element={<EditNote />} />
 
 
          

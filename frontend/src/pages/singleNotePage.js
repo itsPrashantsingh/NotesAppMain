@@ -1,7 +1,28 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../components/navbar'
+import { useParams } from 'react-router-dom'
+import parse from 'html-react-parser';
 
 const SingleNotePage = () => {
+
+  const [note, setNote] = useState({});
+  let {id} = useParams();
+  function getNote(){
+    fetch('http://localhost:8000/getnote',{
+      method: 'POST',
+      mode:"cors",
+      headers: {
+        'Content-Type': 'application/json'
+        },
+      body: JSON.stringify({noteId: id})
+    }).then((res)=>res.json()).then((data)=>{
+      
+      setNote(data.note);
+    })
+  }
+  useEffect(()=>{
+    getNote();
+  },[])
   return (
     <>
     <Navbar/>
@@ -9,18 +30,15 @@ const SingleNotePage = () => {
 
         <div className="flex items-start justify-between h-[auto] my-3">
           <div className="left w-[80%] h-full">
-            <h3 className='m-0 p-0 text-3xl text-[#000] line-clamp-1 min-w-[90%]'>title</h3>
-            <p className='text-[gray]'>date</p>
+            <h3 className='m-0 p-0 text-3xl text-[#000] line-clamp-1 min-w-[90%]'>{note.title}</h3>
+            <p className='text-[gray]'>{new Date(note.date).toDateString()}</p>
           </div>
-          <div className="right flex items-start gap-1 w-[20%] h-full justify-end">
-            <img className='w-[30px] h-[30px] cursor-pointer'  alt="del" />
-            <img className='w-[35px] h-[35px] cursor-pointer'  alt="edit" />
-          </div>
+          
         </div>
 
-        <p className='text-gray'>description</p>
+        <p className='text-gray'>{note.description}</p>
         <div className='my-3 w-full'>
-          xskndwnd
+          {parse(`${note.content}`)}
          
 
         </div>

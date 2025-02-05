@@ -24,7 +24,7 @@ const AddNote = ({ placeholder }) => {
         body: JSON.stringify({title:title, description:description, content:content, isImportant:isimportant,uploadedBy:localStorage.getItem("userID")})
       });
       const data = await res.json();
-        console.log(data);
+        // console.log(data);
         if (data.success) {
 
           alert("Note Added Successfully");
